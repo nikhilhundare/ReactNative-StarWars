@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-const IMAGE_URL = require('../common/assets/planet.jpg');
+const IMAGE_URL = require('../common/assets/orangePlanet.png');
 const NUMBER_OF_COLUMNS = 2;
 const PLANETS_URL = 'https://swapi.co/api/planets/';
 
@@ -52,7 +52,7 @@ export default class PlanetsList extends PureComponent {
         const { planetList, loading } = this.state;
         if(!loading) {
             return (
-              <View style={styles.mainContainer}>
+              <View>
               <FlatList
                       data={planetList}
                       renderItem={this.renderItem}
@@ -68,34 +68,40 @@ export default class PlanetsList extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    paddingTop: 30,
-  },
   planetListContainer: {
     flex:1,
     flexDirection: 'column',
     margin: 1,
     borderRadius:10,
     borderWidth: 1,
+    borderColor:'#696969',
     margin: 10,
+    backgroundColor:'#696969',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
   },
   planetPlaceHolder: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 40,
-    width: 40,
+    height: 80,
+    width: 80,
+    alignItems:'flex-end',
+    justifyContent:'center',
   },
   planetListItemContainer: {
       flex: 1,
       justifyContent: 'space-between',
-      padding: 20,
+      margin:20,
   },
   planetNameText: {
-    fontSize: 16,
+    fontSize: 18,
+    marginTop:10,
+    marginLeft:5,
   },
   planetPopulationText: {
-      fontSize: 10,
+      fontSize: 12,
+      marginLeft:5,
   },
 
 });
