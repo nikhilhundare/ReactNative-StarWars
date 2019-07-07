@@ -8,31 +8,33 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import * as planetActions from './actions/planetsAction.js';
+
 
 const IMAGE_URL = require('../common/assets/orangePlanet.png');
 const NUMBER_OF_COLUMNS = 2;
-const PLANETS_URL = 'https://swapi.co/api/planets/';
 
-export default class PlanetsList extends PureComponent {
+const mapStateToProps = state => ({
+  planetsList: state.planetsList.planetsListData,
+});
+const mapDispatchToProps = dispatch => ({
+  planetsActions: bindActionCreators(planetActions, dispatch)
+});
+
+class PlanetsList extends PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      planetList: [],
-      loading: true,
+      planetList: []
     };
   }
 
-  async componentDidMount() {
-    try {
-        const swPlanetsListAPI = await fetch(PLANETS_URL);
-        const swPlanetsListResult = await swPlanetsListAPI.json();
-        this.setState({
-          planetList: swPlanetsListResult.results,
-          loading: false
-        });
-      } catch(err) {
-          console.log("Error fetching data for Planets List", err);
-      }
+  componentDidMount() {
+    this.props.planetsActions.fetchPlanetsList();
+
   }
 
   renderItem(data){
@@ -49,12 +51,11 @@ export default class PlanetsList extends PureComponent {
   }
 
   render() {
-        const { planetList, loading } = this.state;
-        if(!loading) {
+        if(this.props.planetsList) {
             return (
               <View>
               <FlatList
-                      data={planetList}
+                      data={this.props.planetsList}
                       renderItem={this.renderItem}
                       keyExtractor={(item) => item.name}
                       numColumns={NUMBER_OF_COLUMNS}
@@ -69,7 +70,7 @@ export default class PlanetsList extends PureComponent {
 
 const styles = StyleSheet.create({
   planetListContainer: {
-    flex:1,
+    flex:1/NUMBER_OF_COLUMNS,
     flexDirection: 'column',
     margin: 1,
     borderRadius:10,
@@ -105,3 +106,5 @@ const styles = StyleSheet.create({
   },
 
 });
+
+export default connect (mapStateToProps, mapDispatchToProps)(PlanetsList);
