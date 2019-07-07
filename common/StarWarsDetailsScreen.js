@@ -5,23 +5,50 @@ import {
   Image,
   StyleSheet,
   Text,
+  Dimensions,
 } from 'react-native';
+//import Camera from 'react-native-camera';
 
 export default class StarWarsDetailsScreen extends PureComponent {
 
   constructor(props) {
     super(props);
+    //this._renderCamera = this._renderCamera.bind(this);
   }
 
   _renderSubText(data) {
-    //debugger;
-    // for (const [subTitle, subText] of entries) {
-    //   console.log(`There are ${count} ${fruit}s`)
-    // }
     var namesList = Object.entries(data).map(function(item){
                         return <Text style={styles.itemDetailsText}>{item[0].toUpperCase()} : {item[1]}</Text>;
                     });
     return namesList;
+  }
+
+  _renderCamera(){
+    // return(
+    //   <Camera
+    //     ref={(cam) => {
+    //       this.camera = cam
+    //     }}
+    //     style={styles.view}
+    //     aspect={Camera.constants.Aspect.fill}
+    //     type='front'
+    //     mirrorImage={true}
+    //   >
+    //     <Text style={styles.capture} onPress={this.takePicture.bind(this)}>
+    //       [CAPTURE]
+    //     </Text>
+    //   </Camera>
+    // );
+  }
+
+  takePicture() {
+    // const options = {}
+    //
+    // this.camera.capture({metadata: options}).then((data) => {
+    //   console.log(data)
+    // }).catch((error) => {
+    //   console.log(error)
+    // })
   }
 
   render() {
@@ -31,15 +58,16 @@ export default class StarWarsDetailsScreen extends PureComponent {
     } = this.props;
     if(dataSource){
       return (
-        <View style={styles.mainContainer}>
-          <View style={styles.detailsContainer}>
-            <Text style={styles.itemHeading}> {dataSource.name.toUpperCase()} </Text>
-            {this._renderSubText(dataSource.subDetails)}
+          <View style={styles.mainContainer}>
+            <View style={styles.detailsContainer}>
+              <Text style={styles.itemHeading}> {dataSource.name.toUpperCase()} </Text>
+              {this._renderSubText(dataSource.subDetails)}
+            </View>
+            <View style={{paddingLeft:10, paddingRight: 10, justifyContent:'flex-start', alignItems:'flex-start'}}>
+              <Image source={this.props.imageURL} style={styles.imagePlaceHolder}/>
+            </View>
           </View>
-          <View style={{paddingLeft:10, paddingRight: 10, justifyContent:'flex-start', alignItems:'flex-start'}}>
-            <Image source={this.props.imageURL} style={styles.imagePlaceHolder}/>
-          </View>
-        </View>
+          //{this._renderCamera()}
       );
     } else {
       return <ActivityIndicator />
@@ -73,5 +101,25 @@ const styles = StyleSheet.create({
     height: 140,
     width: 140,
     marginRight: 10,
+  },
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width
+  },
+  view: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  capture: {
+    flex: 0,
+    backgroundColor: 'steelblue',
+    borderRadius: 10,
+    color: 'red',
+    padding: 15,
+    margin: 45
   },
 });
