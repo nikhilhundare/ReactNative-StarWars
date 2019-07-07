@@ -1,16 +1,39 @@
-export function fetchPlanetsList(){
-  return dispatch => {
+export const FETCH_PLANETS_PENDING = 'FETCH_PLANETS_PENDING';
+export const FETCH_PLANETS_SUCCESS = 'FETCH_PLANETS_SUCCESS';
+export const FETCH_PLANETS_ERROR = 'FETCH_PLANETS_ERROR';
 
-    fetch('https://swapi.co/api/planets/')
-      .then((response) => response.json())
-      .then((responseJson) => dispatch(fetchPlanetSuccess(responseJson.results)));
+export const FETCH_PLANETS_DETAILS_PENDING = 'FETCH_PLANETS_DETAILS_PENDING';
+export const FETCH_PLANETS_DETAILS_SUCCESS = 'FETCH_PLANETS_DETAILS_SUCCESS';
+export const FETCH_PLANETS_DETAILS_ERROR = 'FETCH_PLANETS_DETAILS_ERROR';
+
+
+function fetchPlanetPending(){
+  return {
+    type:FETCH_PLANETS_PENDING,
+  }
+}
+function fetchPlanetSuccess(data){
+  return {
+    type:FETCH_PLANETS_SUCCESS,
+    planetsListData: data
+  }
+}
+function fetchPlanetError(error){
+  return {
+    type:FETCH_PLANETS_ERROR,
+    error:error,
   }
 }
 
-export function fetchPlanetSuccess(data){
-  return {
-    type:'FETCH_PLANETS_SUCCESS',
-    planetsListData: data
+export function fetchPlanetsList(){
+  return dispatch => {
+    dispatch(fetchPlanetPending());
+    fetch('https://swapi.co/api/planets/')
+      .then((response) => response.json())
+      .then((responseJson) => dispatch(fetchPlanetSuccess(responseJson.results)))
+      .catch(error => {
+            dispatch(fetchPlanetError(error));
+      })
   }
 }
 
@@ -20,6 +43,7 @@ planetsDetailsObject = {
 };
 export function fetchPlanetsDetails(){
     return dispatch => {
+      dispatch(fetchPlanetDetailsPending());
       fetch('https://swapi.co/api/planets/1')
       .then((response) => response.json())
       .then((responseJSON) => {
@@ -41,13 +65,27 @@ export function fetchPlanetsDetails(){
           planetsDetailsObject.filmsData = filmsDetailsArray;
           dispatch(fetchPlanetDetailsSuccess(planetsDetailsObject))
         });
-      });
+      })
+      .catch(error => {
+            dispatch(fetchPlanetDetailsError(error));
+      })
     }
 }
 
-export function fetchPlanetDetailsSuccess(data){
+function fetchPlanetDetailsPending(){
   return {
-    type:'FETCH_PLANETS_DETAILS_SUCCESS',
+    type:FETCH_PLANETS_DETAILS_PENDING,
+  }
+}
+function fetchPlanetDetailsSuccess(data){
+  return {
+    type: FETCH_PLANETS_DETAILS_SUCCESS,
     planetsDetailsData: data
+  }
+}
+function fetchPlanetDetailsError(error){
+  return {
+    type:FETCH_PLANETS_DETAILS_ERROR,
+    error:error,
   }
 }
