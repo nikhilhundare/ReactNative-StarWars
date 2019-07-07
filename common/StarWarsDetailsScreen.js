@@ -7,6 +7,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 //import Camera from 'react-native-camera';
 
 export default class StarWarsDetailsScreen extends PureComponent {
@@ -17,7 +18,17 @@ export default class StarWarsDetailsScreen extends PureComponent {
   }
 
   _renderSubText(data) {
+    const onPress = this.props.onPress;
     var namesList = Object.entries(data).map(function(item){
+                        if(item[0] === 'homeland'){
+                          return (
+                            <Text
+                              style={styles.itemDetailsLinkText}
+                              onPress={onPress}>
+                                {item[0].toUpperCase()}
+                            </Text>
+                          );
+                        }
                         return <Text style={styles.itemDetailsText}>{item[0].toUpperCase()} : {item[1]}</Text>;
                     });
     return namesList;
@@ -93,6 +104,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal',
     color:'#fff',
+    marginTop: 5,
+    marginLeft: 5,
+  },
+  itemDetailsLinkText: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    color:'#FFA500',
     marginTop: 5,
     marginLeft: 5,
   },

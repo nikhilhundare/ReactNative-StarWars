@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {
   View,
   FlatList,
@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Actions } from 'react-native-router-flux';
+
 import * as planetActions from './actions/planetsAction.js';
 import StarWarsFlatList from '../common/StarWarsFlatList.js';
 
@@ -23,12 +25,13 @@ const mapDispatchToProps = dispatch => ({
   planetsActions: bindActionCreators(planetActions, dispatch)
 });
 
-class PlanetsList extends PureComponent {
+class PlanetsList extends Component {
   constructor(props){
     super(props);
     this.state = {
       planetList: []
     };
+    this._renderItem = this._renderItem.bind(this);
   }
 
   componentDidMount() {
@@ -36,14 +39,34 @@ class PlanetsList extends PureComponent {
 
   }
 
+  _onItemPress(item){
+    const planetURL = item.item.url;
+    Actions.planetDetails({url:planetURL});
+  }
+
+  _renderItem(item, index) {
+    return(
+      <View>
+        <StarWarsFlatList
+            numColumns={NUMBER_OF_COLUMNS}
+            imageURL={IMAGE_URL}
+            type={TYPE}
+            item={item}
+            onPress={()=> this._onItemPress(item)}
+        />
+      </View>
+    );
+
+  }
+
   render() {
         if(this.props.planetsList) {
             return (
-              <StarWarsFlatList
-                  dataSource={this.props.planetsList}
-                  numColumns={NUMBER_OF_COLUMNS}
-                  imageURL={IMAGE_URL}
-                  type={TYPE}
+              <FlatList
+                      data={this.props.planetsList}
+                      renderItem={this._renderItem}
+                      keyExtractor={(item, index) => `K_${index}`}
+                      numColumns={NUMBER_OF_COLUMNS}
               />
             );
         } else {

@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
   View,
-  FlatList,
   ActivityIndicator,
   TouchableOpacity,
   Image,
@@ -14,51 +13,43 @@ export default class StarWarsFlatList extends PureComponent {
 
   constructor(props) {
     super(props);
-    this._renderItem = this._renderItem.bind(this);
-  }
-
-  _renderItem(data){
-    let itemTitle;
-    let itemSubTitle;
-
-    switch(this.props.type){
-      case 'PLANETS_LIST' : itemTitle = data.item.name;
-                            itemSubTitle = data.item.population;
-                            break;
-      case 'FILMS_LIST'   : itemTitle = data.item.title;
-                            itemSubTitle = '';
-                            break;
-      default :             break;
-    }
-    return (
-      <TouchableOpacity style={styles.listContainer}>
-        <View style={styles.listItemContainer}>
-          <Image source={this.props.imageURL}
-              style={styles.imagePlaceHolder}/>
-          <Text style={styles.itemTitleText}>{itemTitle}</Text>
-          <Text style={styles.itemSubTitleText}>{itemSubTitle}</Text>
-        </View>
-      </TouchableOpacity>
-    );
   }
 
   render() {
     const {
-      dataSource,
-      numColumns,
+      item,
       imageURL,
       type,
+      onPress,
     } = this.props;
 
-    if(dataSource.length){
+    let itemTitle;
+    let itemSubTitle;
+
+    switch(this.props.type){
+      case 'PLANETS_LIST' : itemTitle = item.item.name;
+                            itemSubTitle = item.item.population;
+                            break;
+      case 'FILMS_LIST'   : itemTitle = item.item.title;
+                            itemSubTitle = '';
+                            break;
+      case 'ACTORS_LIST'   : itemTitle = item.item.name;
+                            itemSubTitle = item.item.height;
+                            break;
+      default :             break;
+    }
+
+    if(item){
       return (
         <View>
-        <FlatList
-                data={this.props.dataSource}
-                renderItem={this._renderItem}
-                keyExtractor={(item, index) => `K_${index}`}
-                numColumns={this.props.numColumns}
-                />
+        <TouchableOpacity style={styles.listContainer} onPress={onPress}>
+          <View style={styles.listItemContainer}>
+            <Image source={this.props.imageURL}
+                style={styles.imagePlaceHolder}/>
+            <Text style={styles.itemTitleText}>{itemTitle}</Text>
+            <Text style={styles.itemSubTitleText}>{itemSubTitle}</Text>
+          </View>
+        </TouchableOpacity>
         </View>
       );
     } else {
@@ -69,7 +60,7 @@ export default class StarWarsFlatList extends PureComponent {
 }
 const styles = StyleSheet.create({
   listContainer: {
-    flex:1/2,
+    flex:1,
     flexDirection: 'column',
     borderRadius:10,
     borderWidth: 1,
@@ -81,6 +72,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+    width:160,
+    alignItems: 'flex-start',
   },
   listItemContainer: {
       flex: 1,

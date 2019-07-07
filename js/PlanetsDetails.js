@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Actions } from 'react-native-router-flux';
+
 import * as planetActions from './actions/planetsAction.js';
 import StarWarsFlatList from '../common/StarWarsFlatList.js';
 import StarWarsDetailsScreen from '../common/StarWarsDetailsScreen.js';
@@ -26,13 +28,36 @@ const mapDispatchToProps = dispatch => ({
   planetsActions: bindActionCreators(planetActions, dispatch)
 });
 
-class PlanetsDetails extends PureComponent {
+class PlanetsDetails extends Component {
   constructor(props){
     super(props);
+    this._renderItem = this._renderItem.bind(this);
+    this._onItemPress = this._onItemPress.bind(this);
   }
 
   componentDidMount() {
-    this.props.planetsActions.fetchPlanetsDetails();
+    this.props.planetsActions.fetchPlanetsDetails(this.props.url);
+  }
+
+  componentWillUnmount(){
+    //alert(2);
+    //this.props.planetsActions.resetPlanetDetails();
+  }
+
+  _onItemPress(item){
+    const filmURL = item.item.url;
+    Actions.filmsDetails({url:filmURL});
+  }
+
+  _renderItem(item, index){
+    return(
+      <StarWarsFlatList
+        imageURL={FILMS_IMAGE_URL}
+        type={TYPE}
+        item={item}
+        onPress={()=> this._onItemPress(item)}
+      />
+    );
   }
 
   render() {
@@ -62,12 +87,12 @@ class PlanetsDetails extends PureComponent {
                 />
               </View>
               <View style={styles.filmsContainer}>
-                <StarWarsFlatList
-                    dataSource={this.props.planetsDetails.filmsData}
-                    numColumns={NUMBER_OF_COLUMNS}
-                    imageURL={FILMS_IMAGE_URL}
-                    type={TYPE}
-                />
+              <FlatList
+                      data={this.props.planetsDetails.filmsData}
+                      renderItem={this._renderItem}
+                      keyExtractor={(item, index) => `K_${index}`}
+                      numColumns={NUMBER_OF_COLUMNS}
+              />
               </View>
             </View>
           );
