@@ -35,13 +35,16 @@ const App = () => {
       <SafeAreaView style={styles.mainContainer}>
       <Router sceneStyle = {styles.routerContainer}>
          <Scene
+         navigationBarTitleImage = {HEADER_IMAGE_URL}
+         navigationBarTitleImageStyle = {styles.logoStyle}
           navigationBarStyle = {styles.routerContainer}
+          tintColor='white'
           key = "root"
         >
-            <Scene key = "planetList" component = {PlanetsList} title = "Planets List" initial = {true} />
-            <Scene key = "planetDetails" component = {PlanetsDetails} title = "Planet Details" />
-            <Scene key = "filmsDetails" component = {FilmsDetails} title = "Films Details" />
-            <Scene key = "actorsDetails" component = {ActorDetails} title = "Actors Details" />
+            <Scene key = "planetList" component = {PlanetsList} initial = {true} />
+            <Scene key = "planetDetails" component = {PlanetsDetails}  />
+            <Scene key = "filmsDetails" component = {FilmsDetails} />
+            <Scene key = "actorsDetails" component = {ActorDetails} />
          </Scene>
       </Router>
       </SafeAreaView>
@@ -55,11 +58,18 @@ const styles = StyleSheet.create({
     backgroundColor:'black',
   },
   routerContainer: {
+
     backgroundColor:'black',
   },
-  navBarImageStyle: {
-    backgroundColor:'black',
-    height: 100,
+  logoStyle: {
+    height: 80,
+    width: 130,
+    resizeMode:'contain',
+    top:-50,
+    position:'absolute',
   },
+  leftButton: {
+    color:'#fff',
+  }
 });
 export default App;

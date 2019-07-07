@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Actions } from 'react-native-router-flux';
+
 import * as planetActions from './actions/planetsAction.js';
 import StarWarsFlatList from '../common/StarWarsFlatList.js';
 import StarWarsDetailsScreen from '../common/StarWarsDetailsScreen.js';
@@ -38,7 +40,7 @@ class ActorDetails extends Component {
   }
 
   _onDetailsItemPress(url){
-    alert(url);
+    Actions.planetDetails({url:url});
   }
 
   _renderItem(item, index){
@@ -60,7 +62,7 @@ class ActorDetails extends Component {
         birth_year,
         hair_color,
         skin_color,
-        homeland,
+        homeworld,
       } = this.props.actorsDetails.actorsData;
       const detailsData = {
         name: name,
@@ -69,7 +71,7 @@ class ActorDetails extends Component {
           gender: gender,
           birth_year: birth_year,
           skin_color: skin_color,
-          homeland:homeland,
+          homeworld:homeworld,
         },
       }
       return (
@@ -78,7 +80,7 @@ class ActorDetails extends Component {
             <StarWarsDetailsScreen
               dataSource={detailsData}
               imageURL={ACTOR_IMAGE_URL}
-              onPress={()=> this._onDetailsItemPress(homeland)}
+              onPress={()=> this._onDetailsItemPress(homeworld)}
             />
           </View>
           <View style={styles.filmsContainer}>
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
   filmsContainer: {
     flex: 0.8,
     marginTop: 10,
+    marginTop: 60,
   },
 
 });

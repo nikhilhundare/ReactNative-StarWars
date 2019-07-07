@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   filmsContainer: {
     flex: 0.8,
-    marginTop: 10,
+    marginTop: 60,
   },
 
 });

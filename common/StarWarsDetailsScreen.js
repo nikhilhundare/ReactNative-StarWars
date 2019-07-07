@@ -20,7 +20,7 @@ export default class StarWarsDetailsScreen extends PureComponent {
   _renderSubText(data) {
     const onPress = this.props.onPress;
     var namesList = Object.entries(data).map(function(item){
-                        if(item[0] === 'homeland'){
+                        if(item[0] === 'homeworld'){
                           return (
                             <Text
                               style={styles.itemDetailsLinkText}
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     height: 140,
     width: 140,
     marginRight: 10,
+    resizeMode:'contain',
   },
   preview: {
     flex: 1,

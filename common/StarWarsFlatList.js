@@ -66,35 +66,36 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor:'#696969',
     margin: 10,
-    backgroundColor:'#696969',
+    backgroundColor:'#4d4e4f',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
     width:160,
-    alignItems: 'flex-start',
   },
   listItemContainer: {
       flex: 1,
-      justifyContent: 'space-between',
       margin:20,
+      alignItems: 'center',
+      justifyContent: 'center',
   },
   imagePlaceHolder: {
     height: 80,
     width: 80,
     alignItems:'flex-end',
     justifyContent:'center',
+    resizeMode:'contain',
   },
 
   itemTitleText: {
     fontSize: 18,
-    marginTop:10,
-    marginLeft:5,
+    fontWeight:'bold',
+    margin:10,
   },
   itemSubTitleText: {
       fontSize: 12,
-      marginLeft:5,
+      marginLeft:10,
   },
 
 });
