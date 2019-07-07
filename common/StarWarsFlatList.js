@@ -56,7 +56,7 @@ export default class StarWarsFlatList extends PureComponent {
         <FlatList
                 data={this.props.dataSource}
                 renderItem={this._renderItem}
-                keyExtractor={(item) => item.name}
+                keyExtractor={(item, index) => `K_${index}`}
                 numColumns={this.props.numColumns}
                 />
         </View>
