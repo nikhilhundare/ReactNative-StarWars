@@ -92,10 +92,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight:'bold',
     margin:10,
+    color: '#fff',
   },
   itemSubTitleText: {
       fontSize: 12,
       marginLeft:10,
+      color: '#c0c0c0',
   },
 
 });
