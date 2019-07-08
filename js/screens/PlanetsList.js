@@ -11,10 +11,10 @@ import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Actions } from 'react-native-router-flux';
 
-import * as planetActions from './actions/planetsAction.js';
-import StarWarsFlatList from '../common/StarWarsFlatList.js';
+import * as planetActions from '../actions/planetsAction.js';
+import StarWarsFlatList from '../../common/StarWarsFlatList.js';
 
-const IMAGE_URL = require('../common/assets/orangePlanet.png');
+const IMAGE_URL = require('../../common/assets/orangePlanet.png');
 const NUMBER_OF_COLUMNS = 2;
 const TYPE = 'PLANETS_LIST';
 
@@ -39,6 +39,14 @@ class PlanetsList extends Component {
 
   }
 
+  static getDerivedStateFromProps(nextProps, prevState){
+    if(nextProps.planetsList){
+      return { planetsList: nextProps.planetsList};
+    } else {
+      return null;
+    }
+  }
+
   _onItemPress(item){
     const planetURL = item.item.url;
     Actions.planetDetails({url:planetURL});
@@ -60,18 +68,14 @@ class PlanetsList extends Component {
   }
 
   render() {
-        if(this.props.planetsList) {
-            return (
-              <FlatList
-                      data={this.props.planetsList}
-                      renderItem={this._renderItem}
-                      keyExtractor={(item, index) => `K_${index}`}
-                      numColumns={NUMBER_OF_COLUMNS}
-              />
-            );
-        } else {
-            return <ActivityIndicator />
-        }
+      return (
+        <FlatList
+                data={this.props.planetsList}
+                renderItem={this._renderItem}
+                keyExtractor={(item, index) => `K_${index}`}
+                numColumns={NUMBER_OF_COLUMNS}
+        />
+      );
   }
 }
 export default connect (mapStateToProps, mapDispatchToProps)(PlanetsList);

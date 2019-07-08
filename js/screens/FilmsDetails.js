@@ -12,12 +12,12 @@ import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Actions } from 'react-native-router-flux';
 
-import * as planetActions from './actions/planetsAction.js';
-import StarWarsFlatList from '../common/StarWarsFlatList.js';
-import StarWarsDetailsScreen from '../common/StarWarsDetailsScreen.js';
+import * as planetActions from '../actions/planetsAction.js';
+import StarWarsFlatList from '../../common/StarWarsFlatList.js';
+import StarWarsDetailsScreen from '../../common/StarWarsDetailsScreen.js';
 
-const IMAGE_URL = require('../common/assets/greenPlanet.png');
-const ACTOR_IMAGE_URL = require('../common/assets/actor.png');
+const IMAGE_URL = require('../../common/assets/greenPlanet.png');
+const ACTOR_IMAGE_URL = require('../../common/assets/actor.png');
 const NUMBER_OF_COLUMNS = 2;
 const TYPE = 'ACTORS_LIST';
 

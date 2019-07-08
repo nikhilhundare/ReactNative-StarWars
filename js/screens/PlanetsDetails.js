@@ -12,12 +12,12 @@ import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Actions } from 'react-native-router-flux';
 
-import * as planetActions from './actions/planetsAction.js';
-import StarWarsFlatList from '../common/StarWarsFlatList.js';
-import StarWarsDetailsScreen from '../common/StarWarsDetailsScreen.js';
+import * as planetActions from '../actions/planetsAction.js';
+import StarWarsFlatList from '../../common/StarWarsFlatList.js';
+import StarWarsDetailsScreen from '../../common/StarWarsDetailsScreen.js';
 
-const IMAGE_URL = require('../common/assets/orangePlanet.png');
-const FILMS_IMAGE_URL = require('../common/assets/movies.png');
+const IMAGE_URL = require('../../common/assets/orangePlanet.png');
+const FILMS_IMAGE_URL = require('../../common/assets/movies.png');
 const NUMBER_OF_COLUMNS = 2;
 const TYPE = 'FILMS_LIST';
 
@@ -37,11 +37,6 @@ class PlanetsDetails extends Component {
 
   componentDidMount() {
     this.props.planetsActions.fetchPlanetsDetails(this.props.url);
-  }
-
-  componentWillUnmount(){
-    //alert(2);
-    //this.props.planetsActions.resetPlanetDetails();
   }
 
   _onItemPress(item){
