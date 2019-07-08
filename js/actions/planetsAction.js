@@ -34,14 +34,16 @@ function fetchPlanetError(error){
 }
 
 export function fetchPlanetsList(){
-  return dispatch => {
+  return async dispatch => {
     dispatch(fetchPlanetPending());
-    fetch('https://swapi.co/api/planets/')
-      .then((response) => response.json())
-      .then((responseJson) => dispatch(fetchPlanetSuccess(responseJson.results)))
-      .catch(error => {
-            dispatch(fetchPlanetError(error));
-      })
+    try{
+      const response  = await fetch('https://swapi.co/api/planets/');
+      const responseJson = await response.json();
+      dispatch(fetchPlanetSuccess(responseJson.results));
+    }catch(error){
+      dispatch(fetchPlanetError(error));
+    }
+
   }
 }
 
