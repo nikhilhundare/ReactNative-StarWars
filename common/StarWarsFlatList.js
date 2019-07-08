@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import PropTypes from 'prop-types';
 
 export default class StarWarsFlatList extends PureComponent {
 
@@ -101,6 +100,3 @@ const styles = StyleSheet.create({
   },
 
 });
-StarWarsFlatList.propTypes = {
-  dataSource: PropTypes.array.isRequired,
-};
