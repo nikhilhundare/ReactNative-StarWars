@@ -104,13 +104,13 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   imageContainer: {
-    flex:0.2,
+    flex:0.4,
     flexDirection: 'row',
     justifyContent:'center',
   },
   filmsContainer: {
-    flex: 0.8,
-    marginTop: 60,
+    flex: 0.6,
+    marginTop: 20,
   },
 
 });

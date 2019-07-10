@@ -6,15 +6,18 @@ import {
   StyleSheet,
   Text,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-//import Camera from 'react-native-camera';
+import { RNCamera } from 'react-native-camera';
 
+const CAMERA_ICON = require('./assets/camera_Icon.png');
 export default class StarWarsDetailsScreen extends PureComponent {
 
   constructor(props) {
     super(props);
-    //this._renderCamera = this._renderCamera.bind(this);
+    this._renderCamera = this._renderCamera.bind(this);
+    this.takePicture = this.takePicture.bind(this);
   }
 
   _renderSubText(data) {
@@ -35,32 +38,49 @@ export default class StarWarsDetailsScreen extends PureComponent {
   }
 
   _renderCamera(){
-    // return(
-    //   <Camera
-    //     ref={(cam) => {
-    //       this.camera = cam
-    //     }}
-    //     style={styles.view}
-    //     aspect={Camera.constants.Aspect.fill}
-    //     type='front'
-    //     mirrorImage={true}
-    //   >
-    //     <Text style={styles.capture} onPress={this.takePicture.bind(this)}>
-    //       [CAPTURE]
-    //     </Text>
-    //   </Camera>
-    // );
+    return(
+      <View style={styles.cameraContainer}>
+        <RNCamera
+            ref={ref => {
+              this.camera = ref;
+            }}
+            style={styles.preview}
+            type={RNCamera.Constants.Type.front}
+            androidCameraPermissionOptions={{
+              title: 'Permission to use camera',
+              message: 'We need your permission to use your camera',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel',
+            }}
+            androidRecordAudioPermissionOptions={{
+              title: 'Permission to use audio recording',
+              message: 'We need your permission to use your audio',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel',
+            }}
+            onGoogleVisionBarcodesDetected={({ barcodes }) => {
+              console.log(barcodes);
+            }}
+          />
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', margin: 30, }}>
+            <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
+              <Image
+                style={styles.button}
+                source={CAMERA_ICON}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+    );
   }
 
-  takePicture() {
-    // const options = {}
-    //
-    // this.camera.capture({metadata: options}).then((data) => {
-    //   console.log(data)
-    // }).catch((error) => {
-    //   console.log(error)
-    // })
-  }
+  takePicture = async() => {
+    if (this.camera) {
+      const options = { quality: 0.5, base64: true };
+      const data = await this.camera.takePictureAsync(options);
+      alert("Image has been captured on below location: \n "+data.uri);
+    }
+  };
 
   render() {
     const {
@@ -69,6 +89,7 @@ export default class StarWarsDetailsScreen extends PureComponent {
     } = this.props;
     if(dataSource){
       return (
+        <View style={{flex:1}}>
           <View style={styles.mainContainer}>
             <View style={styles.detailsContainer}>
               <Text style={styles.itemHeading}> {dataSource.name.toUpperCase()} </Text>
@@ -76,10 +97,12 @@ export default class StarWarsDetailsScreen extends PureComponent {
             </View>
             <View style={{paddingLeft:10, paddingRight: 10, justifyContent:'flex-start', alignItems:'flex-start'}}>
               <Image source={this.props.imageURL} style={styles.imagePlaceHolder}/>
+
             </View>
           </View>
-          //{this._renderCamera()}
-      );
+          {this._renderCamera()}
+        </View>
+        );
     } else {
       return <ActivityIndicator />
     }
@@ -88,15 +111,15 @@ export default class StarWarsDetailsScreen extends PureComponent {
 }
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    flex: 0.6,
     flexDirection:'row',
     justifyContent: 'space-between',
   },
   detailsContainer: {
-    marginLeft: 5,
+    marginLeft: 10,
   },
   itemHeading: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color:'#fff',
   },
@@ -123,10 +146,8 @@ const styles = StyleSheet.create({
   },
   preview: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
   },
   view: {
     flex: 1,
@@ -134,11 +155,19 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   capture: {
-    flex: 0,
-    backgroundColor: 'steelblue',
-    borderRadius: 10,
-    color: 'red',
-    padding: 15,
-    margin: 45
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    alignSelf: 'center',
+    width:50,
   },
+  cameraContainer: {
+    backgroundColor: '#000',
+    justifyContent:'flex-start',
+    flex:0.4,
+
+  },
+  button: {
+    height: 50,
+    width: 50,
+  }
 });
